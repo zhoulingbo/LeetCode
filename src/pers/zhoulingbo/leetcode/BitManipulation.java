@@ -91,7 +91,7 @@ public class BitManipulation
 
     /**
      * 461.汉明距离(hamming-distance) 两个整数之间的汉明距离指的是这两个数字对应二进制位不同的位置的数目。 给出两个整数 x 和
-     * y，计算它们之间的汉明距离。 注意：0 ≤ x, y < 231.
+     * y，计算它们之间的汉明距离。 注意：0 ≤ x, y < 2^31.
      * @param x
      * @param y
      * @return
@@ -132,5 +132,15 @@ public class BitManipulation
             distance += count * (nums.length - count);  // 每个位置上0或者1个数之乘积就是单个位置上所有元素距离之和
         }
         return distance;
+    }
+    
+    /**
+     * 756. 金字塔转换矩阵
+     * @param bottom
+     * @param allowed
+     * @return
+     */
+    public static boolean pyramidTransition(String bottom, List<String> allowed) {
+        return true;
     }
 }
