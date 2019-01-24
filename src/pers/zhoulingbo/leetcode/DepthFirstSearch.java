@@ -3,7 +3,7 @@ package pers.zhoulingbo.leetcode;
 /**
  * 
  * 深度优先搜索
- *
+ * 
  * @version v1.0.0 @author zhoulingbo 2019-1-18 新建与整理
  */
 public class DepthFirstSearch
@@ -11,10 +11,20 @@ public class DepthFirstSearch
 
     public static void main(String[] args)
     {
-        int[][] image = new int[][]{{0,0,0},{0,1,1}};
-        floodFill(image, 1, 1, 1);
+
     }
-    
+
+    /**
+     * 679. 24点游戏(24-game)
+     * @param nums
+     * @return
+     */
+    public static boolean judgePoint24(int[] nums)
+    {
+
+        return true;
+    }
+
     /**
      * 733. 图像渲染(flood-fill)
      * @param image
