@@ -9,9 +9,8 @@ public class Sort
 {
     public static void main(String[] args)
     {
-        int[] A = new int[] { -4, -1, 0, 3, 10 };
-        int[] a = sortedSquares(A);
-        System.out.println(a);
+        int[] A = new int[] { 3, 2, 4, 1 };
+        System.out.println(pancakeSort(A));
     }
 
     /**
@@ -54,6 +53,61 @@ public class Sort
             a[i++] = item;
         }
         return a;
+    }
+
+    /**
+     * 969. 煎饼排序
+     * @param A
+     * @return
+     */
+    public static List<Integer> pancakeSort(int[] A)
+    {
+        List<Integer> list = new ArrayList<>();
+        int last = A.length - 1;
+        while (last >= 0)
+        {
+            int max = A[0];
+            int index = 0;
+            for (int i = 0; i <= last; i++)
+            {
+                if (A[i] > max)
+                {
+                    max = A[i];
+                    index = i;
+                }
+            }
+
+            if (index != last)
+            {
+                list.add(index + 1);
+                pancakeFlip(A, index + 1);
+                list.add(last + 1);
+                pancakeFlip(A, last + 1);
+            }
+            last--;
+        }
+
+        return list;
+    }
+
+    /**
+     * 翻转前k个煎饼
+     * @param A
+     * @param k
+     */
+    public static void pancakeFlip(int[] A, int k)
+    {
+        int low = 0;
+        int high = k - 1;
+        while (high > low)
+        {
+            int temp = A[low];
+            A[low] = A[high];
+            A[high] = temp;
+            
+            low ++;
+            high --;
+        }
     }
 
     /**
