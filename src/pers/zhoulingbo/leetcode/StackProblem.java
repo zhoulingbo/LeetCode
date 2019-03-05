@@ -20,6 +20,55 @@ public class StackProblem
     }
 
     /**
+     * 103. 二叉树的锯齿形层次遍历
+     * @param root
+     * @return
+     */
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root)
+    {
+        List<List<Integer>> list = new ArrayList<>();
+        if (root == null)
+            return list;
+
+        Stack<TreeNode> stack = new Stack<>();
+        stack.add(root);
+        boolean isLeftStart = true;
+        while (true)
+        {
+            List<Integer> items = new ArrayList<>();
+            Stack<TreeNode> nextStack = new Stack<>();
+            while (!stack.isEmpty())
+            {
+                TreeNode node = stack.pop();
+                items.add(node.val);
+
+                if (isLeftStart)
+                {
+                    if (node.left != null)
+                        nextStack.push(node.left);
+                    if (node.right != null)
+                        nextStack.push(node.right);
+                }
+                else
+                {
+                    if (node.right != null)
+                        nextStack.push(node.right);
+                    if (node.left != null)
+                        nextStack.push(node.left);
+                }
+            }
+            list.add(items);
+
+            if (nextStack.isEmpty())
+                break;
+            stack = nextStack;
+            isLeftStart = !isLeftStart;
+        }
+
+        return list;
+    }
+
+    /**
      * 144. 二叉树的前序遍历(binary-tree-preorder-traversal)
      */
     public static List<Integer> preorderTraversal(TreeNode root)
@@ -42,6 +91,16 @@ public class StackProblem
         }
 
         return list;
+    }
+
+    /**
+     * 503. 下一个更大元素 II
+     * @param nums
+     * @return
+     */
+    public int[] nextGreaterElements(int[] nums)
+    {
+        return null;
     }
 
     /**
@@ -85,8 +144,8 @@ public class StackProblem
                 {
                     int a = values.pop();
                     a *= 2;
-                    stack.pop();    // 弹出'd'
-                    stack.pop();    // 弹出'('
+                    stack.pop(); // 弹出'd'
+                    stack.pop(); // 弹出'('
                     if (!stack.isEmpty() && stack.peek() == digit)
                     {// 如果上一个为数字，则+
                         int b = values.pop();
@@ -104,5 +163,55 @@ public class StackProblem
             }
         }
         return values.pop();
+    }
+
+    /**
+     * 946. 验证栈序列
+     * @param pushed
+     * @param popped
+     * @return
+     */
+    public boolean validateStackSequences(int[] pushed, int[] popped)
+    {
+        int i = 0, j = 0;
+        Stack<Integer> stack = new Stack<>();
+        while (i < pushed.length || j < popped.length)
+        {
+            if (stack.isEmpty())
+            {
+                if (i < pushed.length)
+                {
+                    stack.push(pushed[i]);
+                    i++;
+                    continue;
+                }
+
+                break;
+            }
+            else
+            {
+                if (stack.peek() == popped[j])
+                {
+                    stack.pop();
+                    j++;
+                    continue;
+                }
+                else
+                {
+                    if (i < pushed.length)
+                    {
+                        stack.push(pushed[i]);
+                        i++;
+                        continue;
+                    }
+
+                    break;
+                }
+            }
+        }
+
+        if (stack.isEmpty())
+            return true;
+        return false;
     }
 }
