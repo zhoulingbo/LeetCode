@@ -9,6 +9,84 @@ package pers.zhoulingbo.leetcode;
 public class ArrayProblem
 {
 
+    public static void main(String[] args)
+    {
+        int[][] matrix = new int[][] { { 2, 2,}, { 5, 1 } };
+        
+        System.out.println(matrixReshape(matrix, 1, 4));
+    }
+
+    /**
+     * 566. 重塑矩阵
+     * @param nums
+     * @param r
+     * @param c
+     * @return
+     */
+    public static int[][] matrixReshape(int[][] nums, int r, int c)
+    {
+        int row = nums.length;
+        int col = nums[0].length;
+        
+        if (r*c != row*col)
+            return nums;
+        
+        int[][] ans = new int[r][c];
+        for (int i=0; i<r; i++)
+        {
+            for (int j=0; j<c; j++)
+            {
+                int index = i*c+j;
+                int m = index/col;
+                int n = index%col;
+                ans[i][j] = nums[m][n];
+            }
+        }
+        
+        return ans;
+    }
+
+    /**
+     * 766. 托普利茨矩阵
+     * @param matrix
+     * @return
+     */
+    public static boolean isToeplitzMatrix(int[][] matrix)
+    {
+        int row = matrix.length;
+        if (row == 0)
+            return true;
+        int col = matrix[0].length;
+        if (col == 0)
+            return true;
+
+        for (int i = 0; i < row; i++)
+        {
+            int val = matrix[i][0];
+            int j = i + 1;
+            int k = 1;
+            while (j < row && k < col)
+            {
+                if (matrix[j++][k++] != val)
+                    return false;
+            }
+        }
+
+        for (int i = 1; i < col; i++)
+        {
+            int val = matrix[0][i];
+            int j = 1;
+            int k = i + 1;
+            while (j < row && k < col)
+            {
+                if (matrix[j++][k++] != val)
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
     /**
      * 985. 查询后的偶数和(sum-of-even-numbers-after-queries)
      */
