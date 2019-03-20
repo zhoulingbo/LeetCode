@@ -11,9 +11,40 @@ public class ArrayProblem
 
     public static void main(String[] args)
     {
-        int[][] matrix = new int[][] { { 2, 2,}, { 5, 1 } };
-        
-        System.out.println(matrixReshape(matrix, 1, 4));
+        moveZeroes(new int[]{0,1,0,3,12});
+    }
+
+    /**
+     * 283. 移动零
+     * @param nums
+     */
+    public static void moveZeroes(int[] nums)
+    {
+        int i = 0, j = 0;
+        while (i < nums.length && j < nums.length)
+        {
+            if (nums[j] == 0)
+            {
+                j++;
+                continue;
+            }
+
+            if (i == j)
+            {
+                i++;
+                j++;
+                continue;
+            }
+
+            nums[i] = nums[j];
+            i ++;
+            j ++;
+        }
+
+        while (i < nums.length)
+        {
+            nums[i++] = 0;
+        }
     }
 
     /**
@@ -27,22 +58,22 @@ public class ArrayProblem
     {
         int row = nums.length;
         int col = nums[0].length;
-        
-        if (r*c != row*col)
+
+        if (r * c != row * col)
             return nums;
-        
+
         int[][] ans = new int[r][c];
-        for (int i=0; i<r; i++)
+        for (int i = 0; i < r; i++)
         {
-            for (int j=0; j<c; j++)
+            for (int j = 0; j < c; j++)
             {
-                int index = i*c+j;
-                int m = index/col;
-                int n = index%col;
+                int index = i * c + j;
+                int m = index / col;
+                int n = index % col;
                 ans[i][j] = nums[m][n];
             }
         }
-        
+
         return ans;
     }
 
