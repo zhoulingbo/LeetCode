@@ -1,6 +1,10 @@
 package pers.zhoulingbo.leetcode;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class HashTableProblem
@@ -8,18 +12,8 @@ public class HashTableProblem
 
     public static void main(String[] args)
     {
-        int count = 0;
-        for (int i = 0; i < 9; i++)
-        {
-            for (int j = 0; j < 9; j++)
-            {
-                System.out.print((i / 3 * 3 + j / 3) + "-" + (count + j % 3) + "  ");
-            }
-            System.out.println();
-            count += 3;
-            if (count > 8)
-                count = 0;
-        }
+        String[] A = new String[]{"bella","label","roller"};
+        commonChars(A);
     }
 
     /**
@@ -40,21 +34,21 @@ public class HashTableProblem
                 char ch = board[i][j];
                 char ch1 = board[j][i];
                 char ch2 = board[i / 3 * 3 + j / 3][count + j % 3];
-                
+
                 if (ch != '.')
                 {
                     if (set.contains(ch))
                         return false;
                     set.add(ch);
                 }
-                
+
                 if (ch1 != '.')
                 {
                     if (set1.contains(ch1))
                         return false;
                     set1.add(ch1);
                 }
-                
+
                 if (ch2 != '.')
                 {
                     if (set2.contains(ch2))
@@ -86,5 +80,51 @@ public class HashTableProblem
             return candies.length / 2;
 
         return size;
+    }
+
+    /**
+     * 1002. 查找常用字符
+     * @param A
+     * @return
+     */
+    public static List<String> commonChars(String[] A)
+    {
+        int[] a = new int[26];
+        boolean first = true;
+        Map<Character, Integer> map = new HashMap<>();
+        for (String s : A)
+        {
+            for (Character ch : s.toCharArray())
+            {
+                if (map.containsKey(ch))
+                    map.put(ch, map.get(ch) + 1);
+                else
+                    map.put(ch, 1);
+            }
+
+            for (Character key : map.keySet())
+            {
+                int index = key - 'a';
+                if (first)
+                    a[index] = map.get(key);
+                else
+                    a[index] = Math.min(a[index], map.get(key));
+                map.put(key, 0);
+            }
+
+            if (first)
+                first = false;
+        }
+        
+        List<String> list = new ArrayList<>();
+        for (int i=0; i<a.length; i++)
+        {
+            for (int j=0; j<a[i]; j++)
+            {
+                char ch = (char) ('a' + i);
+                list.add(String.valueOf(ch));
+            }
+        }
+        return list;
     }
 }

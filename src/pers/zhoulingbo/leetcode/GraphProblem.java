@@ -22,7 +22,8 @@ public class GraphProblem
     {
 //        int[][] prerequisites = new int[][] {{ },  { 3 }, {  }, { 1 }, { } };
 //        System.out.println(isBipartite(prerequisites));
-
+        int[][] a = new int[][]{{0, 1}, {0, 2}, {1, 2}};
+        System.out.println(canFinish(3, a));
     }
 
     /**
@@ -115,32 +116,10 @@ public class GraphProblem
      */
     public static boolean canFinish(int numCourses, int[][] prerequisites)
     {
-        int[] a = new int[numCourses];
-        for (int i = 0; i < prerequisites.length; i++)
+        boolean[] visited = new boolean[numCourses];
+        for (int i=0; i<numCourses; i++)
         {
-            int[] item = prerequisites[i]; // 需要先决条件
-            a[item[0]] = 1; // 1表示需先决条件,0表示不需要
-        }
 
-        for (int i = 0; i < a.length; i++)
-        {
-            if (a[i] == 0)
-                continue;
-
-            Queue<Integer> queue = new LinkedList<>();
-            for (int j = 0; j < prerequisites.length; j++)
-            {
-                if (prerequisites[j][0] == i)
-                {
-                    queue.add(prerequisites[j][1]);
-                }
-            }
-        }
-
-        for (int i = 0; i < a.length; i++)
-        {
-            if (a[i] == 1)
-                return false;
         }
 
         return true;

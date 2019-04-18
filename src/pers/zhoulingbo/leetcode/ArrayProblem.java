@@ -158,4 +158,86 @@ public class ArrayProblem
         }
         return a;
     }
+    
+    /**
+     * 999. 车的可用捕获量
+     * @param board
+     * @return
+     */
+    public static int numRookCaptures(char[][] board) 
+    {
+        int r = 0;
+        int c = 0;
+        for (int i=0; i<board.length; i++)
+        {
+            for (int j=0; j<board[0].length; j++)
+            {
+                if (board[i][j] == 'R')
+                {
+                    r = i;
+                    c = j;
+                }
+            }
+        }
+        
+        int count = 0;
+        int a = r;
+        int b = c;
+        while (r > 0)
+        {
+            char ch = board[r--][c];
+            if (ch == 'b' || ch == 'p')
+            {
+                count++;
+                break;
+            }
+            else if (ch == 'B' || ch == 'P')
+            {
+                break;
+            }
+        }
+        r = a;
+        while (r < board.length)
+        {
+            char ch = board[r++][c];
+            if (ch == 'b' || ch == 'p')
+            {
+                count++;
+                break;
+            }
+            else if (ch == 'B' || ch == 'P')
+            {
+                break;
+            }
+        }
+        r = a;
+        while (c > 0)
+        {
+            char ch = board[r][c--];
+            if (ch == 'b' || ch == 'p')
+            {
+                count++;
+                break;
+            }
+            else if (ch == 'B' || ch == 'P')
+            {
+                break;
+            }
+        }
+        c = b;
+        while (c < board[0].length)
+        {
+            char ch = board[r][c++];
+            if (ch == 'b' || ch == 'p')
+            {
+                count++;
+                break;
+            }
+            else if (ch == 'B' || ch == 'P')
+            {
+                break;
+            }
+        }
+        return count;
+    }
 }

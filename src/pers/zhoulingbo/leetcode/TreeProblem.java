@@ -16,6 +16,11 @@
  */
 package pers.zhoulingbo.leetcode;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
 /**
  * 
  * 树问题
@@ -26,9 +31,65 @@ public class TreeProblem
 
     public static void main(String[] args)
     {
-
+        TreeNode root = new TreeNode(5);
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(13);
+        convertBST(root);
     }
 
+    /**
+     * 235. 二叉搜索树的最近公共祖先
+     * @param root
+     * @param p
+     * @param q
+     * @return
+     */
+    public static TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q)
+    {
+        if (root.val == p.val)
+            return p;
+        if (root.val == q.val)
+            return q;
+        if (root.val > p.val && root.val < q.val)
+            return root;
+        if (root.val > q.val && root.val < p.val)
+            return root;
+        if (root.val > p.val && root.val > q.val)
+            return lowestCommonAncestor(root.left, p, q);
+        if (root.val < p.val && root.val < q.val)
+            return lowestCommonAncestor(root.right, p, q);
+        return root;
+    }
+
+    /**
+     * 538. 把二叉搜索树转换为累加树
+     * @param root
+     * @return
+     */
+    public static TreeNode convertBST(TreeNode root)
+    {
+        if (root == null)
+            return root;
+        inorderTraversalSum(root, 0);
+        return root;
+    }
+
+    private static int inorderTraversalSum(TreeNode root, int sum)
+    {
+        if (root.right != null)
+            sum = inorderTraversalSum(root.right, sum);
+        if (sum == 0)
+            sum += root.val;
+        else
+        {
+            root.val += sum;
+            sum = root.val;
+        }
+        if (root.left != null)
+            sum = inorderTraversalSum(root.left, sum);
+        return sum;
+    }
+    
     /**
      * 669. 修剪二叉搜索树
      * @param root
@@ -40,25 +101,56 @@ public class TreeProblem
     {
         if (L == R)
             return new TreeNode(L);
-
         if (root == null)
             return null;
-
         if (root.val < L)
-        {
-            root = root.right;
-            return trimBST(root, L, R);
-        }
-        else if (root.val > R)
-        {
-            root = root.left;
-            return trimBST(root, L, R);
-        }
-        else
-        {
-            root.left = trimBST(root.left, L, R);
-            root.right = trimBST(root.right, L, R);
-        }
+            return trimBST(root.right, L, R);
+        if (root.val > R)
+            return trimBST(root.left, L, R);
+
+        root.left = trimBST(root.left, L, R);
+        root.right = trimBST(root.right, L, R);
         return root;
     }
+
+    /**
+     * 637. 二叉树的层平均值
+     * @param root
+     * @return
+     */
+    public static List<Double> averageOfLevels(TreeNode root)
+    {
+        List<Double> list = new ArrayList<>();
+        List<TreeNode> nodeList = new ArrayList<>();
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        double val = 0;
+        int size = 0;
+        while (!queue.isEmpty())
+        {
+            TreeNode node = queue.poll();
+            val += node.val;
+            size++;
+
+            if (node.left != null)
+                nodeList.add(node.left);
+            if (node.right != null)
+                nodeList.add(node.right);
+
+            if (queue.isEmpty())
+            {
+                list.add(val / size);
+                val = 0;
+                size = 0;
+                if (nodeList.size() > 0)
+                {
+                    queue.addAll(nodeList);
+                    nodeList.clear();
+                }
+            }
+        }
+
+        return list;
+    }
+
 }
