@@ -17,9 +17,11 @@
 package pers.zhoulingbo.leetcode;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Set;
 
 /**
  * 
@@ -31,10 +33,7 @@ public class TreeProblem
 
     public static void main(String[] args)
     {
-        TreeNode root = new TreeNode(5);
-        root.left = new TreeNode(2);
-        root.right = new TreeNode(13);
-        convertBST(root);
+        
     }
 
     /**
@@ -89,7 +88,7 @@ public class TreeProblem
             sum = inorderTraversalSum(root.left, sum);
         return sum;
     }
-    
+
     /**
      * 669. 修剪二叉搜索树
      * @param root
@@ -151,6 +150,60 @@ public class TreeProblem
         }
 
         return list;
+    }
+
+    /**
+     * 653. 两数之和 IV - 输入 BST
+     * @param root
+     * @param k
+     * @return
+     */
+    public boolean findTarget(TreeNode root, int k)
+    {
+        Set<Integer> set = new HashSet<>();
+        set = preorderTraversal(root, set);
+        for (Integer val : set)
+        {
+            int a = k - val;
+            if (a != val && set.contains(a))
+                return true;
+        }
+        return false;
+    }
+
+    private Set<Integer> preorderTraversal(TreeNode root, Set<Integer> set)
+    {
+        if (root == null)
+            return set;
+        set.add(root.val);
+        if (root.left != null)
+            set = preorderTraversal(root.left, set);
+        if (root.right != null)
+            set = preorderTraversal(root.right, set);
+        return set;
+    }
+
+    /**
+     * 404. 左叶子之和
+     * @param root
+     * @return
+     */
+    public static int sumOfLeftLeaves(TreeNode root)
+    {
+        return preorderTraversalSum(root, 0, false);
+    }
+
+    private static int preorderTraversalSum(TreeNode root, int sum, boolean isLeft)
+    {
+        if (root == null)
+            return 0;
+        if (root.left != null)
+            sum = preorderTraversalSum(root.left, sum, true);
+        if (root.right != null)
+            sum = preorderTraversalSum(root.right, sum, false);
+        if (isLeft && root.left == null && root.right == null)
+            sum += root.val;
+        return sum;
     }
 
 }
