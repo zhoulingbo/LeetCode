@@ -17,9 +17,11 @@
 package pers.zhoulingbo.leetcode;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
@@ -33,7 +35,11 @@ public class TreeProblem
 
     public static void main(String[] args)
     {
-        
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(3);
+        root.left.right = new TreeNode(4);
+        System.out.println(tree2str(root));
     }
 
     /**
@@ -206,4 +212,101 @@ public class TreeProblem
         return sum;
     }
 
+    /**
+     * 606. 根据二叉树创建字符串
+     * @param t
+     * @return
+     */
+    public static String tree2str(TreeNode t)
+    {
+        if (t == null)
+            return "";
+        StringBuffer strb = new StringBuffer();
+        strb = tree2str(t, strb);
+        return strb.toString();
+    }
+    
+    public static StringBuffer tree2str(TreeNode t, StringBuffer strb)
+    {
+        if (t == null)
+            return strb.append('(').append(')');
+        strb.append(t.val);
+        if (t.left != null)
+        {
+            strb.append('(');
+            tree2str(t.left, strb);
+            strb.append(')');
+        }
+        if (t.right != null)
+        {
+            if (t.left == null)
+                strb.append('(').append(')');
+            strb.append('(');
+            tree2str(t.right, strb);
+            strb.append(')');
+        }
+        return strb;
+    }
+
+    /**
+     * 563. 二叉树的坡度
+     * @param root
+     * @return
+     */
+    public static int findTilt(TreeNode root)
+    {
+        Map<Integer, Integer> map = sumMap(root, null);
+        return findTilt(root, map);
+    }
+    
+    public static int findTilt(TreeNode root, Map<Integer, Integer> map)
+    {
+        if (root == null)
+            return 0;
+        int left = 0, right = 0;
+        if (root.left != null)
+            left = map.get(root.left.val);
+        if (root.right != null)
+            right = map.get(root.right.val);
+        int tilt = Math.abs(left - right);
+        tilt += findTilt(root.left);
+        tilt += findTilt(root.right);
+        return tilt;
+    }
+
+    public static int sum(TreeNode root)
+    {
+        if (root == null)
+            return 0;
+        int sum = 0;
+        sum += root.val;
+        sum += sum(root.left);
+        sum += sum(root.right);
+        return sum;
+    }
+    
+    public static Map<Integer, Integer> sumMap(TreeNode root, Map<Integer, Integer> map)
+    {
+        if (map == null)
+            map = new HashMap<>();
+        if (root == null)
+            return map;
+        int sum = 0;
+        sum += root.val;
+        if (root.left != null)
+        {
+            if (!map.containsKey(root.left))
+                map = sumMap(root.left, map);
+            sum += map.get(root.left.val);
+        }
+        if (root.right != null)
+        {
+            if (!map.containsKey(root.right))
+                map = sumMap(root.right, map);
+            sum += map.get(root.right.val);
+        }
+        map.put(root.val, sum);
+        return map;
+    }
+    
 }
