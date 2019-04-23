@@ -225,7 +225,7 @@ public class TreeProblem
         strb = tree2str(t, strb);
         return strb.toString();
     }
-    
+
     public static StringBuffer tree2str(TreeNode t, StringBuffer strb)
     {
         if (t == null)
@@ -258,7 +258,7 @@ public class TreeProblem
         Map<Integer, Integer> map = sumMap(root, null);
         return findTilt(root, map);
     }
-    
+
     public static int findTilt(TreeNode root, Map<Integer, Integer> map)
     {
         if (root == null)
@@ -284,7 +284,7 @@ public class TreeProblem
         sum += sum(root.right);
         return sum;
     }
-    
+
     public static Map<Integer, Integer> sumMap(TreeNode root, Map<Integer, Integer> map)
     {
         if (map == null)
@@ -308,5 +308,105 @@ public class TreeProblem
         map.put(root.val, sum);
         return map;
     }
+
+    /**
+     * 671. 二叉树中第二小的节点
+     * @param root
+     * @return
+     */
+    public int findSecondMinimumValue(TreeNode root)
+    {
+        if (root == null)
+            return -1;
+        int val = findSecondMinimumValue(root, root.val);
+        return val;
+    }
     
+    public int findSecondMinimumValue(TreeNode root, int min)
+    {
+        if (root.val > min)
+            return root.val;
+        int val = -1;
+        if (root.left != null)
+        {
+            int a = findSecondMinimumValue(root.left, min);
+            int b = findSecondMinimumValue(root.right, min);
+            if (a != -1 && b != -1)
+            {
+                if (a > b)
+                    return b;
+                else
+                    return a;
+            }
+            if (a != -1)
+                return a;
+            if (b != -1)
+                return b;
+        }
+        return val;
+    }
+
+    /**
+     * 993. 二叉树的堂兄弟节点
+     * @param root
+     * @param x
+     * @param y
+     * @return
+     */
+    public boolean isCousins(TreeNode root, int x, int y)
+    {
+        int px = -1, py = -1;
+        int hx = -1, hy = -1;
+        int h = 0;
+        List<TreeNode> nodeList = new ArrayList<>();
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while (!queue.isEmpty())
+        {
+            TreeNode node = queue.poll();
+            if (node.left != null)
+            {
+                nodeList.add(node.left);
+                if (node.left.val == x)
+                {
+                    hx = h;
+                    px = node.val;
+                }
+                if (node.left.val == y)
+                {
+                    hy = h;
+                    py = node.val;
+                }
+            }
+            if (node.right != null)
+            {
+                nodeList.add(node.right);
+                if (node.right.val == x)
+                {
+                    hx = h;
+                    px = node.val;
+                }
+                if (node.right.val == y)
+                {
+                    hy = h;
+                    py = node.val;
+                }
+            }
+
+            if (queue.isEmpty())
+            {
+                h++;
+                if (nodeList.size() > 0)
+                {
+                    queue.addAll(nodeList);
+                    nodeList.clear();
+                }
+            }
+        }
+
+        if (px != py && hx == hy)
+            return true;
+        return false;
+    }
+
 }
