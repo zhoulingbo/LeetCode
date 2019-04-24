@@ -36,10 +36,13 @@ public class TreeProblem
     public static void main(String[] args)
     {
         TreeNode root = new TreeNode(1);
-        root.left = new TreeNode(2);
-        root.right = new TreeNode(3);
-        root.left.right = new TreeNode(4);
-        System.out.println(tree2str(root));
+        root.left = new TreeNode(0);
+        root.right = new TreeNode(1);
+        root.left.left = new TreeNode(0);
+        root.left.right = new TreeNode(0);
+        root.right.left = new TreeNode(0);
+        root.right.right = new TreeNode(1);
+        System.out.println(pruneTree(root));
     }
 
     /**
@@ -321,7 +324,7 @@ public class TreeProblem
         int val = findSecondMinimumValue(root, root.val);
         return val;
     }
-    
+
     public int findSecondMinimumValue(TreeNode root, int min)
     {
         if (root.val > min)
@@ -407,6 +410,60 @@ public class TreeProblem
         if (px != py && hx == hy)
             return true;
         return false;
+    }
+
+    /**
+     * 543. 二叉树的直径
+     * @param root
+     * @return
+     */
+    public int diameterOfBinaryTree(TreeNode root)
+    {
+        if (root == null)
+            return 0;
+        int left = maxDepth(root.left);
+        int right = maxDepth(root.right);
+        int diameter = left + right;
+
+        int diameterLeft = diameterOfBinaryTree(root.left);
+        int diameterRight = diameterOfBinaryTree(root.right);
+        if (diameterLeft > diameter)
+            diameter = diameterLeft;
+        if (diameterRight > diameter)
+            diameter = diameterRight;
+        return diameter;
+    }
+
+    /**
+     * 104. 二叉树的最大深度
+     * @param root
+     * @return
+     */
+    public int maxDepth(TreeNode root)
+    {
+        if (root == null)
+            return 0;
+
+        int depth = 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
+        return depth;
+    }
+
+    /**
+     * 814. 二叉树剪枝(binary-tree-pruning)
+     * @param root
+     * @return
+     */
+    public static TreeNode pruneTree(TreeNode root)
+    {
+        if (root.left != null)
+            root.left = pruneTree(root.left);
+        if (root.right != null)
+            root.right = pruneTree(root.right);
+        
+        if (root.val == 0 && root.left == null && root.right == null)
+            return null;
+
+        return root;
     }
 
 }
