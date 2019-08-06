@@ -18,17 +18,22 @@ package pers.zhoulingbo.leetcode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class StringProblem
 {
 
     public static void main(String[] args)
     {
-        
+        System.out.println(lengthOfLongestSubstring("pwwkew"));
     }
-    
-    public static String[] reorderLogFiles(String[] logs) {
+
+    public static String[] reorderLogFiles(String[] logs)
+    {
         int high = logs.length - 1;
         int low = logs.length - 1;
         while (high > 0 && low > 0)
@@ -38,23 +43,49 @@ public class StringProblem
             char ch = s.charAt(index);
             if (ch >= '0' && ch <= '9')
             {
-                high --;
-                low --;
+                high--;
+                low--;
                 continue;
             }
-            
-            
+
         }
-        
+
         return logs;
     }
 
-    private int compare(String s1 , String s2)
+    private int compare(String s1, String s2)
     {
-        int index1 = s1.indexOf(" ")+1;
-        int index2 = s2.indexOf(" ")+1;
+        int index1 = s1.indexOf(" ") + 1;
+        int index2 = s2.indexOf(" ") + 1;
         String ss1 = s1.substring(index1);
         String ss2 = s2.substring(index2);
         return ss1.compareTo(ss2);
     }
+
+    /**
+     * 3. 无重复字符的最长子串
+     * @param s
+     * @return
+     */
+    public static int lengthOfLongestSubstring(String s)
+    {
+        char[] a = s.toCharArray();
+        int longest = 0;
+        Map<Character, Integer> map = new HashMap<>();
+        for (int i=0; i<a.length; i++)
+        {
+            if (map.containsKey(a[i]))
+            {
+                longest = Math.max(longest, map.size());
+                int index = map.get(a[i]);
+                map.clear();
+                i = index;
+                continue;
+            }
+            map.put(a[i], i);
+        }
+        longest = Math.max(longest, map.size());
+        return longest;
+    }
+
 }

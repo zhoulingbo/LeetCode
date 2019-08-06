@@ -1,10 +1,12 @@
 package pers.zhoulingbo.leetcode;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Set;
 
 public class HashTableProblem
@@ -12,8 +14,58 @@ public class HashTableProblem
 
     public static void main(String[] args)
     {
-        String[] A = new String[]{"bella","label","roller"};
-        commonChars(A);
+        int[] nums = new int[] { 9, 9 };
+        System.out.println(containsNearbyDuplicate(nums, 2));
+    }
+
+    /**
+     * 217. 存在重复元素
+     * @param nums
+     * @return
+     */
+    public boolean containsDuplicate(int[] nums)
+    {
+        Set<Integer> set = new HashSet<>();
+        for (int a : nums)
+        {
+            if (set.contains(a))
+                return true;
+            set.add(a);
+        }
+
+        return false;
+    }
+
+    /**
+     * 219. 存在重复元素 II
+     * @param nums
+     * @param k
+     * @return
+     */
+    public static boolean containsNearbyDuplicate(int[] nums, int k)
+    {
+        Map<Integer, HashSet<Integer>> map = new HashMap<>();
+        for (int i=0; i<nums.length; i++)
+        {
+            int a = nums[i];
+            if (map.containsKey(a))
+            {
+                HashSet<Integer> set = map.get(a);
+                for (Integer n : set)
+                {
+                    if (i - n <= k)
+                        return true;
+                }
+                set.add(i);
+            }
+            else
+            {
+                HashSet<Integer> set = new HashSet<>();
+                set.add(i);
+                map.put(a, set);
+            }
+        }
+        return false;
     }
 
     /**
@@ -115,11 +167,11 @@ public class HashTableProblem
             if (first)
                 first = false;
         }
-        
+
         List<String> list = new ArrayList<>();
-        for (int i=0; i<a.length; i++)
+        for (int i = 0; i < a.length; i++)
         {
-            for (int j=0; j<a[i]; j++)
+            for (int j = 0; j < a[i]; j++)
             {
                 char ch = (char) ('a' + i);
                 list.add(String.valueOf(ch));
@@ -127,4 +179,46 @@ public class HashTableProblem
         }
         return list;
     }
+
+    public static List<Integer> topKFrequent(int[] nums, int k)
+    {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (Integer val : nums)
+        {
+            int count = 0;
+            if (map.containsKey(val))
+                count = map.get(val);
+            map.put(val, count + 1);
+        }
+        PriorityQueue<int[]> queue = new PriorityQueue<>(k, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2)
+            {
+                return o1[1] - o2[1];
+            }
+        });
+        for (Integer key : map.keySet())
+        {
+            if (queue.size() < k)
+            {
+                queue.add(new int[] { key, map.get(key) });
+            }
+            else
+            {
+                int[] a = queue.peek();
+                if (map.get(key) > a[1])
+                {
+                    queue.poll();
+                    queue.add(new int[] { key, map.get(key) });
+                }
+            }
+        }
+        List<Integer> list = new ArrayList<>();
+        while (!queue.isEmpty())
+        {
+            list.add(queue.poll()[0]);
+        }
+        return list;
+    }
+
 }

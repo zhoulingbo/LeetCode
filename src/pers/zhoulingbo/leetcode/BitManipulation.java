@@ -1,7 +1,9 @@
 package pers.zhoulingbo.leetcode;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 
@@ -14,7 +16,10 @@ public class BitManipulation
 
     public static void main(String[] args)
     {
-        System.out.println(subsets(new int[] { 1, 2 }));
+        int[] nums = new int[] { 8, 10, 2 };
+        int a = findMaximumXOR(nums);
+
+        System.out.println(a);
     }
 
     /**
@@ -120,7 +125,7 @@ public class BitManipulation
         int count = 0;
         for (int i = 0; i < 32; i++)
         {
-            count = 0;  // 计算每个位置上1或者0的个数
+            count = 0; // 计算每个位置上1或者0的个数
             for (int j = 0; j < nums.length; j++)
             {
                 if ((nums[j] & 1) == 1)
@@ -129,18 +134,106 @@ public class BitManipulation
                 }
                 nums[j] >>= 1;
             }
-            distance += count * (nums.length - count);  // 每个位置上0或者1个数之乘积就是单个位置上所有元素距离之和
+            distance += count * (nums.length - count); // 每个位置上0或者1个数之乘积就是单个位置上所有元素距离之和
         }
         return distance;
     }
-    
+
     /**
      * 756. 金字塔转换矩阵
      * @param bottom
      * @param allowed
      * @return
      */
-    public static boolean pyramidTransition(String bottom, List<String> allowed) {
+    public static boolean pyramidTransition(String bottom, List<String> allowed)
+    {
         return true;
+    }
+
+    /**
+     * 318. 最大单词长度乘积
+     * @param words
+     * @return
+     */
+    public static int maxProduct(String[] words)
+    {
+        int[] vals = new int[words.length];
+        for (int i = 0; i < words.length; i++)
+        {
+            char[] a = words[i].toCharArray();
+            int key = 0;
+            for (char ch : a)
+            {
+                int n = ch - 'a';
+                key |= 1 << n;
+            }
+            vals[i] = key;
+        }
+        int max = 0;
+        for (int i = 0; i < vals.length - 1; i++)
+        {
+            for (int j = i + 1; j < vals.length; j++)
+            {
+                int n = vals[i] & vals[j];
+                if (n != 0)
+                    continue;
+                int m = words[i].length() * words[j].length();
+                max = Math.max(max, m);
+            }
+        }
+        return max;
+    }
+
+    /**
+     * 421. 数组中两个数的最大异或值
+     * @param nums
+     * @return
+     */
+    public static int findMaximumXOR(int[] nums)
+    {
+        int res = 0;
+        int mask = 0;
+        for (int i = 31; i >= 0; i--)
+        {
+            // 注意点1：注意保留前缀的方法，mask 是这样得来的
+            // 用异或也是可以的 mask = mask ^ (1 << i);
+            mask = mask | (1 << i);
+
+            Set<Integer> set = new HashSet<>();
+            for (int num : nums)
+            {
+                // 注意点2：这里使用 & ，保留前缀的意思（从高位到低位）
+                set.add(num & mask);
+            }
+
+            // 这里先假定第 n 位为 1 ，前 n-1 位 res 为之前迭代求得
+            int temp = res | (1 << i);
+            for (Integer prefix : set)
+            {
+                if (set.contains(prefix ^ temp))
+                {
+                    res = temp;
+                    break;
+                }
+            }
+        }
+        return res;
+    }
+
+    /**
+     * 201. 数字范围按位与
+     * @param m
+     * @param n
+     * @return
+     */
+    public static int rangeBitwiseAnd(int m, int n)
+    {
+        int offset = 0;
+        for (; m != n; ++offset)
+        {
+            m >>= 1;
+            n >>= 1;
+        }
+        return n << offset;
     }
 }

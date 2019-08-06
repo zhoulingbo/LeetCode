@@ -10,7 +10,8 @@ public class MathProblem
 
     public static void main(String[] args)
     {
-        System.out.println(divisorGame(8));
+        int[][] grid = new int[][]{{1,0},{0,2}};
+        System.out.println(surfaceArea(grid));
     }
 
     /**
@@ -323,6 +324,46 @@ public class MathProblem
         if (win.contains(N))
             return true;
         return false;
+    }
+
+    /**
+     * 892. 三维形体的表面积
+     * @param grid
+     * @return
+     */
+    public static int surfaceArea(int[][] grid) {
+        int area = 0;
+        int n = grid.length;
+        for (int i=0; i<n; i++)
+        {
+            for (int j=0; j<n; j++)
+            {
+                if (grid[i][j] == 0)
+                    continue;
+                int a = 4 * grid[i][j] + 2;
+                if (i-1 >= 0 && grid[i-1][j] > 0)
+                    a -= Math.min(grid[i-1][j], grid[i][j]);
+                if (j-1 >= 0 && grid[i][j-1] > 0)
+                    a -= Math.min(grid[i][j-1], grid[i][j]);
+                if (i+1 < n && grid[i+1][j] > 0)
+                    a -= Math.min(grid[i+1][j], grid[i][j]);
+                if (j+1 < n && grid[i][j+1] > 0)
+                    a -= Math.min(grid[i][j+1], grid[i][j]);
+                area += a;
+            }
+        }
+        return area;
+    }
+
+    /**
+     * 963. 最小面积矩形 II
+     * @param points
+     * @return
+     */
+    public double minAreaFreeRect(int[][] points) {
+        double area = 0;
+        
+        return area;
     }
 
 }

@@ -1,16 +1,48 @@
 package pers.zhoulingbo.leetcode;
 
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.Stack;
 
 /**
  * 
  * 贪婪算法
  * 
- * @version v1.0.0 @author zhoulingbo 2019-2-14 新建与整理
+ * @author zhoulingbo 2019-2-14 新建与整理
  */
 public class Greedy
 {
+
+    /**
+     * 1046. 最后一块石头的重量
+     * @param stones
+     * @return
+     */
+    public int lastStoneWeight(int[] stones) {
+        Queue<Integer> queue = new PriorityQueue<>(30, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2)
+            {
+                return o2 - o1;
+            }});
+        for (int val : stones)
+            queue.add(val);
+
+        while (!queue.isEmpty())
+        {
+            int max = queue.poll();
+            if (queue.isEmpty())
+                return max;
+            int next = queue.peek();
+            queue.poll();
+            if (next < max)
+                queue.add(max - next);
+        }
+
+        return 0;
+    }
 
     /**
      * 944. 删列造序
