@@ -11,7 +11,53 @@ public class ArrayProblem
 
     public static void main(String[] args)
     {
-        moveZeroes(new int[]{0,1,0,3,12});
+        int[] nums1 = new int[]{1, 2};
+        int[] nums2 = new int[]{3, 4};
+        System.out.println(findMedianSortedArrays(nums1, nums2));
+    }
+
+    /**
+     * 
+     * @param nums1
+     * @param nums2
+     * @return
+     */
+    public static double findMedianSortedArrays(int[] nums1, int[] nums2)
+    {
+        int n = nums1.length + nums2.length;
+        int[] nums = new int[n];
+        int i = 0, j = 0, k = 0;
+        while (i < nums1.length && j < nums2.length)
+        {
+            if (nums1[i] <= nums2[j])
+            {
+                nums[k] = nums1[i];
+                i++;
+            }
+            else
+            {
+                nums[k] = nums2[j];
+                j++;
+            }
+            k++;
+        }
+        while (i < nums1.length)
+        {
+            nums[k] = nums1[i];
+            i++;
+            k++;
+        }
+        while (j < nums2.length)
+        {
+            nums[k] = nums2[j];
+            j++;
+            k++;
+        }
+        if (k % 2 != 0)
+            return nums[(k-1)/2];
+        int a = k / 2;
+        double v = (nums[a] + nums[a-1])/2.0;
+        return v;
     }
 
     /**
@@ -37,8 +83,8 @@ public class ArrayProblem
             }
 
             nums[i] = nums[j];
-            i ++;
-            j ++;
+            i++;
+            j++;
         }
 
         while (i < nums.length)
@@ -158,19 +204,19 @@ public class ArrayProblem
         }
         return a;
     }
-    
+
     /**
      * 999. 车的可用捕获量
      * @param board
      * @return
      */
-    public static int numRookCaptures(char[][] board) 
+    public static int numRookCaptures(char[][] board)
     {
         int r = 0;
         int c = 0;
-        for (int i=0; i<board.length; i++)
+        for (int i = 0; i < board.length; i++)
         {
-            for (int j=0; j<board[0].length; j++)
+            for (int j = 0; j < board[0].length; j++)
             {
                 if (board[i][j] == 'R')
                 {
@@ -179,7 +225,7 @@ public class ArrayProblem
                 }
             }
         }
-        
+
         int count = 0;
         int a = r;
         int b = c;

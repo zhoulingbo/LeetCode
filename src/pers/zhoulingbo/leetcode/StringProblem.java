@@ -16,20 +16,110 @@
  */
 package pers.zhoulingbo.leetcode;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class StringProblem
 {
 
     public static void main(String[] args)
     {
-        System.out.println(lengthOfLongestSubstring("pwwkew"));
+        System.out.println("LEETCODEISHIRING");
+        System.out.println(convert("AB", 1));
+    }
+
+    /**
+     * 6. Z 字形变换
+     * @param s
+     * @param numRows
+     * @return
+     */
+    public static String convert(String s, int numRows)
+    {
+        if (s == null || s.length() <= 1 || numRows == 1)
+            return s;
+        StringBuffer strb = new StringBuffer();
+        for (int i = 1; i <= numRows; i++)
+        {
+            int flag = 0;
+            for (int j = i - 1; j <= s.length() - 1;)
+            {
+                strb.append(s.charAt(j));
+                if (i == 1 || i == numRows)
+                    j += 2 * numRows - 2;
+                else
+                {
+                    if (flag == 0)
+                    {
+                        j += numRows - i + numRows - i;
+                        flag = 1;
+                    }
+                    else
+                    {
+                        j += i + i - 2;
+                        flag = 0;
+                    }
+                }
+            }
+        }
+        return strb.toString();
+    }
+
+    /**
+     * 5. 最长回文子串
+     * @param s
+     * @return
+     */
+    public static String longestPalindrome(String s)
+    {
+        if (s == null || s.length() <= 1)
+            return s;
+
+        int max = 1;
+        String longestPalindrome = s.substring(0, 1);
+        char[] cs = s.toCharArray();
+        for (int i = 1; i <= s.length() - 1; i++)
+        {
+            int left = i - 1;
+            int right = i;
+            while (left >= 0 && right <= s.length() - 1)
+            {
+                if (cs[left] != cs[right])
+                    break;
+
+                if (right - left + 1 > max)
+                {
+                    max = right - left;
+                    if (right == s.length() - 1)
+                        longestPalindrome = s.substring(left);
+                    else
+                        longestPalindrome = s.substring(left, right + 1);
+                }
+                left--;
+                right++;
+            }
+
+            left = i - 1;
+            right = i + 1;
+            while (left >= 0 && right <= s.length() - 1)
+            {
+                if (cs[left] != cs[right])
+                    break;
+
+                if (right - left + 1 > max)
+                {
+                    max = right - left;
+                    if (right == s.length() - 1)
+                        longestPalindrome = s.substring(left);
+                    else
+                        longestPalindrome = s.substring(left, right + 1);
+                }
+                left--;
+                right++;
+            }
+
+        }
+        return longestPalindrome;
     }
 
     public static String[] reorderLogFiles(String[] logs)
@@ -53,15 +143,6 @@ public class StringProblem
         return logs;
     }
 
-    private int compare(String s1, String s2)
-    {
-        int index1 = s1.indexOf(" ") + 1;
-        int index2 = s2.indexOf(" ") + 1;
-        String ss1 = s1.substring(index1);
-        String ss2 = s2.substring(index2);
-        return ss1.compareTo(ss2);
-    }
-
     /**
      * 3. 无重复字符的最长子串
      * @param s
@@ -72,7 +153,7 @@ public class StringProblem
         char[] a = s.toCharArray();
         int longest = 0;
         Map<Character, Integer> map = new HashMap<>();
-        for (int i=0; i<a.length; i++)
+        for (int i = 0; i < a.length; i++)
         {
             if (map.containsKey(a[i]))
             {
@@ -88,4 +169,32 @@ public class StringProblem
         return longest;
     }
 
+    /**
+     * 1108. IP 地址无效化
+     * @param address
+     * @return
+     */
+    public String defangIPaddr(String address)
+    {
+        char[] chars = address.toCharArray();
+        StringBuffer strb = new StringBuffer();
+        for (char ch : chars)
+        {
+            if (ch == '.')
+                strb.append("[.]");
+            else
+                strb.append(ch);
+        }
+        return strb.toString();
+    }
+
+    /**
+     * 893. 特殊等价字符串组
+     * @param A
+     * @return
+     */
+    public int numSpecialEquivGroups(String[] A)
+    {
+        return 0;
+    }
 }

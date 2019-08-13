@@ -15,18 +15,114 @@ import java.util.Stack;
 public class Greedy
 {
 
+    public static void main(String[] args)
+    {
+
+    }
+
+    /**
+     * 1005. K 次取反后最大化的数组和
+     * @param A
+     * @param K
+     * @return
+     */
+    public int largestSumAfterKNegations(int[] A, int K)
+    {
+        Arrays.sort(A);
+        int sum = 0;
+        for (int i = 0; i < A.length; i++)
+        {
+            if (K == 0)
+            {
+                sum += A[i];
+                continue;
+            }
+
+            if (A[i] < 0)
+            {
+                K--;
+                A[i] = -A[i];
+                sum += A[i];
+                continue;
+            }
+            else if (A[i] == 0)
+            {
+                K = 0;
+                continue;
+            }
+            else
+            {
+                if (K % 2 == 0)
+                {
+                    K = 0;
+                    sum += A[i];
+                    continue;
+                }
+                else if (i == 0)
+                {
+                    A[i] = -A[i];
+                    sum += A[i];
+                    K = 0;
+                    continue;
+                }
+                else if (i > 0)
+                {
+                    if (Math.abs(A[i - 1]) > Math.abs(A[i]))
+                    {
+                        A[i] = -A[i];
+                        sum += A[i];
+                        K = 0;
+                        continue;
+                    }
+                    else
+                    {
+                        sum += A[i];
+                        sum -= 2 * A[i - 1];
+                        K = 0;
+                        continue;
+                    }
+                }
+            }
+        }
+        return sum;
+    }
+
+    /**
+     * 1029. 两地调度
+     * @param costs
+     * @return
+     */
+    public int twoCitySchedCost(int[][] costs)
+    {
+        int result = 0;
+        int[] vals = new int[costs.length];
+        for (int i = 0; i < costs.length; i++)
+        {
+            vals[i] = costs[i][0] - costs[i][1]; // 算出飞两地的费用差值
+            result = result + costs[i][1]; // 将飞B地的费用加上差值作为暂时的结果
+        }
+        Arrays.sort(vals); // 排序的目的是为了将最小的差值放在前面
+        for (int i = 0; i < costs.length / 2; i++)
+        {
+            result += vals[i]; // 再用之前暂存的结果加上一半较小的差值便得到了到A地的费用
+        }
+        return result;
+    }
+
     /**
      * 1046. 最后一块石头的重量
      * @param stones
      * @return
      */
-    public int lastStoneWeight(int[] stones) {
+    public int lastStoneWeight(int[] stones)
+    {
         Queue<Integer> queue = new PriorityQueue<>(30, new Comparator<Integer>() {
             @Override
             public int compare(Integer o1, Integer o2)
             {
                 return o2 - o1;
-            }});
+            }
+        });
         for (int val : stones)
             queue.add(val);
 
