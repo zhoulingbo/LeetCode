@@ -1,5 +1,9 @@
 package pers.zhoulingbo.leetcode;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * 
  * 数组问题
@@ -11,13 +15,12 @@ public class ArrayProblem
 
     public static void main(String[] args)
     {
-        int[] nums1 = new int[]{1, 2};
-        int[] nums2 = new int[]{3, 4};
-        System.out.println(findMedianSortedArrays(nums1, nums2));
+        int[] nums = new int[] { 4, 3, 2, 7, 8, 2, 3, 1 };
+        System.out.println(findDuplicates(nums));
     }
 
     /**
-     * 
+     * 4 寻找两个有序数组的中位数
      * @param nums1
      * @param nums2
      * @return
@@ -54,10 +57,188 @@ public class ArrayProblem
             k++;
         }
         if (k % 2 != 0)
-            return nums[(k-1)/2];
+            return nums[(k - 1) / 2];
         int a = k / 2;
-        double v = (nums[a] + nums[a-1])/2.0;
+        double v = (nums[a] + nums[a - 1]) / 2.0;
         return v;
+    }
+
+    /**
+     * 15. 三数之和
+     * @param nums
+     * @return
+     */
+    public static List<List<Integer>> threeSum(int[] nums)
+    {
+        List<List<Integer>> list = new ArrayList<>();
+        if (nums.length < 3)
+            return list;
+
+        Arrays.sort(nums);
+        int i = 0, k = nums.length - 1;
+        while (i <= k - 2)
+        {
+            if (nums[i] == nums[k])
+            {
+                if (nums[i] == 0)
+                {
+                    List<Integer> item = new ArrayList<>();
+                    item.add(0);
+                    item.add(0);
+                    item.add(0);
+                    list.add(item);
+                }
+                break;
+            }
+
+            if (nums[i] > 0 || nums[k] < 0)
+                break;
+
+            int val = -nums[i] - nums[k];
+            if (val < nums[i] || val > nums[k])
+                break;
+            if (val == nums[i])
+            {
+                boolean found = false;
+                int j = i + 1;
+                while (j < k)
+                {
+                    if (val < nums[j])
+                        break;
+                    if (!found && val == nums[j])
+                        found = true;
+                    j++;
+                }
+                if (found)
+                {
+                    List<Integer> item = new ArrayList<>();
+                    item.add(nums[i]);
+                    item.add(nums[i]);
+                    item.add(nums[j]);
+                    list.add(item);
+                }
+                i = j;
+                continue;
+            }
+            if (val == nums[k])
+            {
+                boolean found = false;
+                int j = k - 1;
+                while (j > i)
+                {
+                    if (val > nums[j])
+                        break;
+                    if (!found && val == nums[j])
+                        found = true;
+                    j--;
+                }
+                if (found)
+                {
+                    List<Integer> item = new ArrayList<>();
+                    item.add(nums[i]);
+                    item.add(nums[j]);
+                    item.add(nums[j]);
+                    list.add(item);
+                    k = j + 1;
+                }
+            }
+            k--;
+            i = 0;
+        }
+        return list;
+    }
+
+    /**
+     * 448. 找到所有数组中消失的数字
+     * @param nums
+     * @return
+     */
+    public static List<Integer> findDisappearedNumbers(int[] nums)
+    {
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < nums.length; i++)
+        {
+            int val = Math.abs(nums[i]);
+            if (nums[val - 1] > 0)
+                nums[val - 1] = -nums[val - 1];
+        }
+
+        for (int i = 0; i < nums.length; i++)
+        {
+            if (nums[i] > 0)
+                list.add(i + 1);
+        }
+
+        return list;
+    }
+
+    /**
+     * 442. 数组中重复的数据
+     * @param nums
+     * @return
+     */
+    public static List<Integer> findDuplicates(int[] nums)
+    {
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < nums.length; i++)
+        {
+            int val = Math.abs(nums[i]);
+            if (nums[val - 1] > 0)
+                nums[val - 1] = -nums[val - 1];
+            else
+                list.add(val);
+        }
+        return list;
+    }
+
+    /**
+     * 41. 缺失的第一个正数
+     * @param nums
+     * @return
+     */
+    public int firstMissingPositive(int[] nums)
+    {
+        int n = nums.length;
+
+        int contains = 0;
+        for (int i = 0; i < n; i++)
+        {
+            if (nums[i] == 1)
+            {
+                contains++;
+                break;
+            }
+        }
+
+        if (contains == 0)
+            return 1;
+
+        if (n == 1)
+            return 2;
+
+        for (int i = 0; i < n; i++)
+            if ((nums[i] <= 0) || (nums[i] > n))
+                nums[i] = 1;
+
+        for (int i = 0; i < n; i++)
+        {
+            int a = Math.abs(nums[i]);
+            if (a == n)
+                nums[0] = -Math.abs(nums[0]);
+            else
+                nums[a] = -Math.abs(nums[a]);
+        }
+
+        for (int i = 1; i < n; i++)
+        {
+            if (nums[i] > 0)
+                return i;
+        }
+
+        if (nums[0] > 0)
+            return n;
+
+        return n + 1;
     }
 
     /**

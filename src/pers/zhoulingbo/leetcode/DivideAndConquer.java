@@ -11,8 +11,78 @@ public class DivideAndConquer
 
     public static void main(String[] args)
     {
-        int[][] points = new int[][] { { 6, 10 }, { -3, 3 }, { -2, 5 }, { 0, 2 } };
-        kClosest(points, 3);
+        ListNode list1 = new ListNode(1);
+        list1.next = new ListNode(3);
+        list1.next.next = new ListNode(5);
+        
+        ListNode list2 = new ListNode(1);
+        list2.next = new ListNode(2);
+        list2.next.next = new ListNode(4);
+        list2.next.next.next = new ListNode(7);
+        
+    }
+
+    /**
+     * 23. 合并K个排序链表
+     * @param lists
+     * @return
+     */
+    public static ListNode mergeKLists(ListNode[] lists) 
+    {
+        if (lists == null || lists.length == 0)
+            return null;
+        int length = lists.length;
+        int interval = 1;
+        while (interval < length)
+        {
+            for (int i=0; i<length-interval; i+=interval*2)
+            {
+                lists[i] = mergeLists(lists[i], lists[i+interval]);
+            }
+            interval *= 2;
+        }
+        return lists[0];
+    }
+    
+    public static ListNode mergeLists(ListNode list1, ListNode list2)
+    {
+        if (list1 == null)
+            return list2;
+        if (list2 == null)
+            return list1;
+        ListNode l1 = list1, l2 = list2;
+        ListNode root = null;
+        ListNode list = null;
+        while (l1 != null && l2 != null)
+        {
+            ListNode node = new ListNode(-1);
+            if (l1.val <= l2.val)
+            {
+                node.val = l1.val;
+                l1 = l1.next;
+            }
+            else
+            {
+                node.val = l2.val;
+                l2 = l2.next;
+            }
+            if (root == null)
+            {
+                root = node;
+                list = root;
+            }
+            else
+            {
+                list.next = node;
+                list = list.next;
+            }
+        }
+        
+        if (l1 != null)
+            list.next = l1;
+        if (l2 != null)
+            list.next = l2;
+        return root;
     }
 
     /**

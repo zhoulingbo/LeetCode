@@ -170,6 +170,61 @@ public class StringProblem
     }
 
     /**
+     * 10. 正则表达式匹配
+     * @param s
+     * @param p
+     * @return
+     */
+    public boolean isMatch(String s, String p)
+    {
+        if ((s == null || s.length() == 0) && (p == null || p.length() == 0))
+            return true;
+        if (!(s == null || s.length() == 0) && (p == null || p.length() == 0))
+            return false;
+        char[] ps = p.toCharArray();
+        char[] ss = s.toCharArray();
+        int i = 0, j = 0;
+        while (i < ps.length && j < ss.length)
+        {
+            if (ps[i] == '.')
+            {
+                i ++;
+                j ++;
+            }
+            else if (ps[i] == '*')
+            {
+                if (i > 0)
+                {
+                    if (ps[i - 1] == '.')
+                    {
+                        
+                    }
+                    else
+                    {
+                        
+                    }
+                }
+                else
+                {
+                    i ++;
+                }
+            }
+            else
+            {
+                if (ps[i] != ss[j])
+                    return false;
+                else
+                {
+                    i ++;
+                    j ++;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * 1108. IP 地址无效化
      * @param address
      * @return
